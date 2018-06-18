@@ -12,6 +12,10 @@
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
 
     <RuntimeIdentifiers>win10-x86;win10-x64;linux-x64;ubuntu.14.04-x64;</RuntimeIdentifiers>
+
+    <AssemblyName>WebTouch.Frontend.FunnyDogs</AssemblyName>
+
+    <RootNamespace>WebTouch.Frontend.FunnyDogs</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
