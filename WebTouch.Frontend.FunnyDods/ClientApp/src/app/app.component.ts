@@ -34,25 +34,21 @@ export class AppComponent extends BaseComponent implements OnInit {
   public dog: Dog = {photoPath: "assets/start.jpg"} as Dog;
   public url: string;
 
-  ngOnInit() {
-    //debugger;
+  ngOnInit()
+  {
+    this.loadBreedList();
 
     this.activatedRoute.params.subscribe(params => {
       this.url = params['bread'];
       if (this.url)
       {
-        this.reload(this.url)
+        this.reloadPhoto(this.url)
       }
-      else
-      {
-        this.reload('random') }
     });
 
   }
 
-  reload(url: string) {
-    if (!url) return;
-
+  loadBreedList() {
     this.breedService.getList()
       .subscribe(
         response => // success path
@@ -77,13 +73,31 @@ export class AppComponent extends BaseComponent implements OnInit {
       );
   }
 
+  reloadPhoto()
+  {
+    if (!this.selectedBreed.name) return;
+
+    this.dogService.getRandomDogByBreed(this.selectedBreed.name)
+      .subscribe(
+        response => // success path
+        {
+          //debugger;
+          let body = (response as HttpResponse<object>).body;
+          this.dog.photoPath = body["message"];
+        },
+        error => // error path
+        {
+          console.error(error);
+        }
+      );
+  }
+
   filter(name: string): Breed[] {
     return this.breedList.filter(option =>
       option.name.toLowerCase().indexOf(name.toLowerCase()) === 0);
   }
 
   displayFn(breed?: Breed): string | undefined {
-    //debugger;
     return breed ? breed.name : undefined;
   }
 
@@ -93,23 +107,10 @@ export class AppComponent extends BaseComponent implements OnInit {
     var selectedBreed = event.option.value as Breed;
     this.selectedBreed.name = selectedBreed.name;
 
-    //if (!this.url) return;
+    this.reloadPhoto();
 
-      //debugger;
-      //this.router.navigateByUrl(`/${selectedBreed.name}`);
+    //debugger;
+    //this.router.navigateByUrl(`/${selectedBreed.name}`);
 
-      this.dogService.getRandomDogByBreed(selectedBreed.name)
-        .subscribe(
-          response => // success path
-          {
-            //debugger;
-            let body = (response as HttpResponse<object>).body;
-            this.dog.photoPath = body["message"];
-          },
-          error => // error path
-          {
-            console.error(error);
-          }
-        );
   }
 }
