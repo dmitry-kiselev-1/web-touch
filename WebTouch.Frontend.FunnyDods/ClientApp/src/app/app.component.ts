@@ -31,7 +31,7 @@ export class AppComponent extends BaseComponent implements OnInit {
 
   public breedList: Array<Breed> = new Array<Breed>();
   public selectedBreed: Breed = new Breed();
-  public dog: Dog = new Dog();
+  public dog: Dog = {photoPath: "assets/start.jpg"} as Dog;
   public url: string;
 
   ngOnInit() {

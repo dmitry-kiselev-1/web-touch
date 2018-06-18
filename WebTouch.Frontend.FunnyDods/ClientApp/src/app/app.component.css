@@ -21,17 +21,16 @@
   /*max-width: 400px;*/
 }
 
-.example-header-image {
-  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
-  background-size: cover;
-}
-
 .mat-card {
-  /*margin: 10px;*/
+  /*margin: 10px;
   height: 100%;
-  width: 100%;
+  width: 100%;*/
 }
 
 .mat-autocomplete-panel {
   /*max-height: 256px;*/
+}
+
+.mat-card-image {
+  width: calc(50% + 48px);
 }

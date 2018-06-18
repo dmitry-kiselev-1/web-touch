@@ -1,7 +1,8 @@
 <div class="container-fluid app-container">
 
       <mat-card>
-        <mat-card-content>
+        <mat-card-header>
+
           <form class="example-form">
             <mat-form-field class="example-full-width">
               <input type="text" placeholder="Select a dog, please!" aria-label="Fanny Dog"
@@ -14,10 +15,8 @@
               </mat-autocomplete>
             </mat-form-field>
           </form>
-        </mat-card-content>
-      </mat-card>
 
-      <mat-card>
+        </mat-card-header>
         <img mat-card-image [src]="this.dog.photoPath">
       </mat-card>
 
