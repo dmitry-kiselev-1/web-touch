@@ -1,25 +1,28 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { BaseService } from './base-service';
+import { Observable } from 'rxjs';
+import { catchError, retry, tap } from 'rxjs/operators';
 import { Dog } from '../models/dog';
-import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class DogService extends BaseService {
 
   constructor(private httpClient: HttpClient) {
     super();
-    this.apiRoutePrefix = '/api/product/';
+    this.apiRoutePrefix = "/breed/"; // "/breed/akita/images/random"
   }
-/*
-  public get(id: string): Promise<Dog> {
-    return this.httpClient.get(
-      this.apiDomain + this.apiRoutePrefix + id,
-      this.requestOptions)
-      .toPromise()
-      .then(response => response.json() as Dog)
-      .catch(error => Promise.reject(error));
+
+  private apiRoutePrefixEnd: string = "/images/random";
+
+  getRandomDogByBreed(breed: string): Observable<object>
+  {
+    return this.httpClient.get<HttpResponse<object>>(
+      `${this.apiDomain}${this.apiRoutePrefix}${breed}${this.apiRoutePrefixEnd}`,
+      {
+        //headers: this.httpOptions.headers,
+        observe: 'response'
+      });
   }
-*/
+
 }

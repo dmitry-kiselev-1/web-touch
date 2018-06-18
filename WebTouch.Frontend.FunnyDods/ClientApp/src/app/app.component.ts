@@ -7,10 +7,10 @@ import { Breed } from './models/breed';
 import { BaseComponent } from './components/base.component';
 import { debug } from 'util';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
-
-export class User {
-  constructor(public name: string) { }
-}
+import { HttpResponse } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DogService } from './services/dog.service';
+import { Dog } from './models/dog';
 
 @Component({
   selector: 'app-root',
@@ -20,58 +20,96 @@ export class User {
 export class AppComponent extends BaseComponent implements OnInit {
 
   myControl = new FormControl();
-  options = [];
-  filteredOptions: Observable<User[]>;
+  filteredOptions: Observable<Breed[]>;
 
-  constructor(private breedService: BreedService) { super(); }
+  constructor(
+    private breedService: BreedService,
+    private dogService: DogService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router)
+  { super(); }
 
-  public breedList: any; //: Breed[] = [];
-  public breed: Breed;
+  public breedList: Array<Breed> = new Array<Breed>();
+  public selectedBreed: Breed = new Breed();
+  public dog: Dog = new Dog();
+  public url: string;
 
   ngOnInit() {
+    //debugger;
 
-    debugger;
-    let breeds = this.breedService.getList()
-      .subscribe((data) => {
-        debugger;
-        this.breedList = data;
+    this.activatedRoute.params.subscribe(params => {
+      this.url = params['bread'];
+      if (this.url)
+      {
+        this.reload(this.url)
+      }
+      else
+      {
+        this.reload('random') }
+    });
 
-        for (let propName in data.message) {
-          this.options.push(new User(propName));
-        }
+  }
 
-        this.myControl.setValue('');
+  reload(url: string) {
+    if (!url) return;
 
-      });
-/*
     this.breedService.getList()
-      .then(items => {
-        this.breedList = items as Breed[];
-      })
-      .catch(error => {
-        this.handleError(error);
-      });
-*/
-    this.filteredOptions = this.myControl.valueChanges
-      .pipe(
-        startWith<string | User>(''),
-        map(value => typeof value === 'string' ? value : value.name),
-        map(name => name ? this.filter(name) : this.options.slice())
+      .subscribe(
+        response => // success path
+        {
+          //debugger;
+          let body = (response as HttpResponse<object>).body;
+          for (let propertyName in body["message"]) {
+            this.breedList.push({ name: propertyName } as Breed);
+
+            this.filteredOptions = this.myControl.valueChanges
+              .pipe(
+                startWith<string | Breed>(''),
+                map(value => typeof value === 'string' ? value : value.name),
+                map(name => name ? this.filter(name) : this.breedList.slice())
+              );
+          }
+        },
+        error => // error path
+        {
+          console.error(error);
+        }
       );
   }
 
-  filter(name: string): User[] {
-    return this.options.filter(option =>
+  filter(name: string): Breed[] {
+    return this.breedList.filter(option =>
       option.name.toLowerCase().indexOf(name.toLowerCase()) === 0);
   }
 
-  displayFn(user?: User): string | undefined {
-    return user ? user.name : undefined;
+  displayFn(breed?: Breed): string | undefined {
+    //debugger;
+    return breed ? breed.name : undefined;
   }
 
   optionSelected(event: MatAutocompleteSelectedEvent)
   {
-    debugger;
-    var selected = event.option.value;
+    //debugger;
+    var selectedBreed = event.option.value as Breed;
+    this.selectedBreed.name = selectedBreed.name;
+
+    //if (!this.url) return;
+
+      //debugger;
+      //this.router.navigateByUrl(`/${selectedBreed.name}`);
+
+      this.dogService.getRandomDogByBreed(selectedBreed.name)
+        .subscribe(
+          response => // success path
+          {
+            //debugger;
+            let body = (response as HttpResponse<object>).body;
+            this.dog.photoPath = body["message"];
+          },
+          error => // error path
+          {
+            console.error(error);
+          }
+        );
   }
 }

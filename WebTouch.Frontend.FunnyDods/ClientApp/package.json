@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start": "ng serve",
+    "start 4000": "ng serve",
     "build": "ng build --prod --aot --extract-css",
     "build:ssr": "npm run build -- --app=ssr --output-hashing=media",
     "ng": "ng",
@@ -16,7 +17,6 @@
     "npm install": "npm install",
     "npm prune": "npm prune",
     "ng build --prod --aot": "ng build --prod --aot",
-    "ng serve --port 4200": "ng serve --port 4200",
     "npm update -g": "npm update -g",
     "npm install -g npm": "npm install -g npm",
     "ng update": "ng update"

@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { BaseService } from './base-service';
-import { Dog } from '../models/dog';
-import { Breed } from '../models/breed';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError, retry, tap } from 'rxjs/operators';
 
@@ -16,22 +12,14 @@ export class BreedService extends BaseService {
     this.apiRoutePrefix = '/breeds/list/all';
   }
 
-  // Выполняет асинхронный запрос к веб-сервису
-  getList(): Observable
+  getList(): Observable<object>
   {
-    debugger;
-    return this.httpClient.get(
-      this.apiDomain + this.apiRoutePrefix, this.httpHeaders);
+    return this.httpClient.get<HttpResponse<object>>(
+      `${this.apiDomain}${this.apiRoutePrefix}`,
+      {
+        //headers: this.httpOptions.headers,
+        observe: 'response'
+      });
   }
 
-/*
-  public getList(): Promise<Breed[]> {
-    return this.http.get(
-      this.apiDomain + this.apiRoutePrefix,
-      this.requestOptions)
-      .toPromise()
-      .then(response => response.json().message as Breed[])
-      .catch(error => Promise.reject(error));
-  }
-*/
 }
