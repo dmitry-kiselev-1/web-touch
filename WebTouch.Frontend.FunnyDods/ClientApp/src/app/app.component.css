@@ -25,6 +25,7 @@
   /*margin: 10px;
   height: 100%;
   width: 100%;*/
+  width: 50%;
 }
 
 .mat-autocomplete-panel {
@@ -32,5 +33,5 @@
 }
 
 .mat-card-image {
-  width: calc(50% + 48px);
+  /*width: calc(50% + 48px);*/
 }

@@ -8,7 +8,7 @@ import { BaseComponent } from './components/base.component';
 import { debug } from 'util';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
 import { HttpResponse } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, Params } from '@angular/router';
 import { DogService } from './services/dog.service';
 import { Dog } from './models/dog';
 
@@ -32,22 +32,20 @@ export class AppComponent extends BaseComponent implements OnInit {
   public breedList: Array<Breed> = new Array<Breed>();
   public selectedBreed: Breed = new Breed();
   public dog: Dog = {photoPath: "assets/start.jpg"} as Dog;
-  public url: string;
+  private breedParamName = "breed";
 
   ngOnInit()
   {
-    //this.router.navigateByUrl (`/${"ggg"}`);
-
     this.loadBreedList();
 
-    this.activatedRoute.params.subscribe(params => {
-      this.url = params['bread'];
-      if (this.url)
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.selectedBreed.name = params[this.breedParamName];
+      if (this.selectedBreed.name)
       {
+        debugger;
         this.reloadPhoto();
       }
     });
-
   }
 
   loadBreedList() {
@@ -79,8 +77,6 @@ export class AppComponent extends BaseComponent implements OnInit {
   {
     if (!this.selectedBreed.name) return;
 
-    //this.router.navigateByUrl (`/${this.selectedBreed.name}`);
-
     this.dogService.getRandomDogByBreed(this.selectedBreed.name)
       .subscribe(
         response => // success path
@@ -109,6 +105,6 @@ export class AppComponent extends BaseComponent implements OnInit {
   {
     var selectedBreed = event.option.value as Breed;
     this.selectedBreed.name = selectedBreed.name;
-    this.reloadPhoto();
+    this.router.navigateByUrl (`/?${this.breedParamName}=${this.selectedBreed.name}`);
   }
 }
