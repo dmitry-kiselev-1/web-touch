@@ -35,3 +35,12 @@
 .mat-card-image {
   /*width: calc(50% + 48px);*/
 }
+
+.errorMessage {
+  color: orange;
+  font-size: larger;
+}
+
+.mat-card-content>:last-child:not(.mat-card-footer), .mat-card>:last-child:not(.mat-card-footer) {
+  text-align: center;
+}

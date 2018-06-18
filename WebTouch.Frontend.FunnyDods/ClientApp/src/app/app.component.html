@@ -2,22 +2,25 @@
 
       <mat-card>
         <mat-card-header>
-
           <form class="example-form">
-            <mat-form-field class="example-full-width">
-              <input type="text" placeholder="Select a dog, please!" aria-label="Fanny Dog"
-                     matInput [formControl]="myControl" [matAutocomplete]="auto">
-              <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" isOpen="true"
-                                (optionSelected)="optionSelected($event)">
-                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                  {{ option.name }}
-                </mat-option>
-              </mat-autocomplete>
-            </mat-form-field>
-          </form>
-
+                <mat-form-field class="example-full-width">
+                  <input type="text" placeholder="Select a dog, please!" aria-label="Fanny Dog"
+                         matInput [formControl]="myControl" [matAutocomplete]="auto">
+                  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" isOpen="true"
+                                    (optionSelected)="optionSelected($event)">
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </form>
         </mat-card-header>
         <img mat-card-image [src]="this.dog.photoPath">
+        <mat-card-content>
+          <span class="errorMessage">
+            {{this.errorMessage}}
+          </span>
+        </mat-card-content>
       </mat-card>
 
 </div>

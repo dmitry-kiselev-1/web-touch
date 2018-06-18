@@ -33,6 +33,7 @@ export class AppComponent extends BaseComponent implements OnInit {
   public selectedBreed: Breed = new Breed();
   public dog: Dog = {photoPath: "assets/start.jpg"} as Dog;
   private breedParamName = "breed";
+  public errorMessage: string = "";
 
   ngOnInit()
   {
@@ -42,7 +43,7 @@ export class AppComponent extends BaseComponent implements OnInit {
       this.selectedBreed.name = params[this.breedParamName];
       if (this.selectedBreed.name)
       {
-        debugger;
+        //debugger;
         this.reloadPhoto();
       }
     });
@@ -69,6 +70,7 @@ export class AppComponent extends BaseComponent implements OnInit {
         error => // error path
         {
           console.error(error);
+          this.errorMessage = "Oops! Can't read list of breed!";
         }
       );
   }
@@ -84,10 +86,13 @@ export class AppComponent extends BaseComponent implements OnInit {
           //debugger;
           let body = (response as HttpResponse<object>).body;
           this.dog.photoPath = body["message"];
+          this.errorMessage = "";
         },
         error => // error path
         {
+          //debugger;
           console.error(error);
+          this.errorMessage = `Oops! ${error.error.message}!`;
         }
       );
   }
