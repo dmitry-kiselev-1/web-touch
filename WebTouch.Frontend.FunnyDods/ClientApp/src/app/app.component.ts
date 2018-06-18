@@ -36,13 +36,15 @@ export class AppComponent extends BaseComponent implements OnInit {
 
   ngOnInit()
   {
+    //this.router.navigateByUrl (`/${"ggg"}`);
+
     this.loadBreedList();
 
     this.activatedRoute.params.subscribe(params => {
       this.url = params['bread'];
       if (this.url)
       {
-        this.reloadPhoto(this.url)
+        this.reloadPhoto();
       }
     });
 
@@ -77,6 +79,8 @@ export class AppComponent extends BaseComponent implements OnInit {
   {
     if (!this.selectedBreed.name) return;
 
+    //this.router.navigateByUrl (`/${this.selectedBreed.name}`);
+
     this.dogService.getRandomDogByBreed(this.selectedBreed.name)
       .subscribe(
         response => // success path
@@ -103,13 +107,8 @@ export class AppComponent extends BaseComponent implements OnInit {
 
   optionSelected(event: MatAutocompleteSelectedEvent)
   {
-    //debugger;
     var selectedBreed = event.option.value as Breed;
     this.selectedBreed.name = selectedBreed.name;
-
     this.reloadPhoto();
-
-    //debugger;
-    //this.router.navigateByUrl(`/${selectedBreed.name}`);
   }
 }
