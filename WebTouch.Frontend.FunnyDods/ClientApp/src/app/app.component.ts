@@ -111,6 +111,5 @@ export class AppComponent extends BaseComponent implements OnInit {
 
     //debugger;
     //this.router.navigateByUrl(`/${selectedBreed.name}`);
-
   }
 }
